@@ -186,39 +186,39 @@
 //                           </>
 //                         )}
 //                       </div>
-//                       <div>
-//                         <label
-//                           className="mb-0 cursor-pointer flex items-left justify-between bg-amber-200"
-//                           onClick={() => setSubCategoryExpanded(!subCategoryExpanded)}
-//                         >
-//                           subCategory
-//                           {!subCategoryExpanded ? (
-//                             <AiOutlineCaretDown className="h-8" />
-//                           ) : (
-//                             <AiOutlineCaretUp className="h-8" />
-//                           )}
-//                         </label>
-//                         {subCategoryExpanded && (
-//                           <>
-//                             {subCategory.map((option) => (
-//                               <div key={option.id} className="flex items-center mb-2">
-//                                 <input
-//                                   type="checkbox"
-//                                   id={option.id}
-//                                   name="subCategory"
-//                                   value={option.title}
-//                                   onChange={(e) => {
-//                                     handleFilterChange("subCategory", e.target.value);
-//                                     applyFilters();
-//                                   }}
-//                                   checked={filters.subCategory.includes(option.title)}
-//                                 />
-//                                 <label htmlFor={option.id} className="ml-2">{option.title}</label>
-//                               </div>
-//                             ))}
-//                           </>
-//                         )}
-//                       </div>
+                      <div>
+                        <label
+                          className="mb-0 cursor-pointer flex items-left justify-between bg-amber-200"
+                          onClick={() => setSubCategoryExpanded(!subCategoryExpanded)}
+                        >
+                          subCategory
+                          {!subCategoryExpanded ? (
+                            <AiOutlineCaretDown className="h-8" />
+                          ) : (
+                            <AiOutlineCaretUp className="h-8" />
+                          )}
+                        </label>
+                        {subCategoryExpanded && (
+                          <>
+                            {subCategory.map((option) => (
+                              <div key={option.id} className="flex items-center mb-2">
+                                <input
+                                  type="checkbox"
+                                  id={option.id}
+                                  name="subCategory"
+                                  value={option.title}
+                                  onChange={(e) => {
+                                    handleFilterChange("subCategory", e.target.value);
+                                    applyFilters();
+                                  }}
+                                  checked={filters.subCategory.includes(option.title)}
+                                />
+                                <label htmlFor={option.id} className="ml-2">{option.title}</label>
+                              </div>
+                            ))}
+                          </>
+                        )}
+                      </div>
 //                       {/* Color filter section */}
 //                       <div>
 //                         <label className="mb-0 cursor-pointer flex items-left justify-between bg-amber-200" onClick={() => setColorExpanded(!colorExpanded)}>
