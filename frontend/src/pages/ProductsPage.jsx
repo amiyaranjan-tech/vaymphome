@@ -9,7 +9,7 @@ import ProductCard from "../components/Route/ProductCard/ProductCard";
 import styles from "../styles/styles";
 import { getAllProducts } from "../redux/actions/product";
 import { categoriesData, sleeveType, neckType, color, fabric, occasion, fit, gender, size, subCategory } from "../static/data"; // Assuming data is imported correctly
-import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineClose, AiFillFilter, AiOutlineSwap } from "react-icons/ai";
 
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
@@ -57,6 +57,7 @@ const ProductsPage = () => {
   useEffect(() => {
     applyFilters();
   }, [filters, page]);
+
   useEffect(() => {
     if (categoriesParam === null) {
       setData(allProducts);
@@ -109,13 +110,13 @@ const ProductsPage = () => {
   };
 
   const applyFilters = () => {
-    // Dispatch action to get filtered products
     const queryParams = {
       ...filters,
       page,
       perPage,
     };
     dispatch(getAllProducts(queryParams));
+
   };
 
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
@@ -133,6 +134,30 @@ const ProductsPage = () => {
     setSortDrawerOpen(false);
   };
 
+  const clearFilters = () => {
+    setFilters({
+      category: [],
+      subCategory: [],
+      color: [],
+      size: [],
+      neckType: [],
+      sleeveType: [],
+      gender: [],
+      fabric: [],
+      fit: [],
+      occasion: [],
+      sortBy: "",
+      sortOrder: "desc",
+      customerRating: [],
+      priceRange: [],
+    });
+    window.location.reload()
+    setPage(1); // Reset to the first page when filters change
+    // setData(categoriesParam);
+
+  };
+
+
   const visibleSizes = showAllSizes ? size : size.slice(0, 6);
   const visibleSubCategories = showAllSubCategories ? subCategory : subCategory.slice(0, 6);
   const visibleColors = showAllColors ? color : color.slice(0, 6);
@@ -146,12 +171,13 @@ const ProductsPage = () => {
           <Header activeHeading={3} />
           {/* FOR MOBILE VIEW */}
           {categoriesParam === "Cloths" && (
-            <div className="flex mb-4 sticky top-28 z-10">
+            <div className="flex mb-0 sticky top-28 z-10">
               <div className="w-1/2">
                 <button
                   onClick={() => setFilterDrawerOpen(true)}
                   className="w-full bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out md:hidden"
                 >
+                  <AiFillFilter className="mr-2 text-xl text-gray-800" />
                   Filter
 
                 </button>
@@ -161,6 +187,8 @@ const ProductsPage = () => {
                   onClick={() => setSortDrawerOpen(true)}
                   className="w-full bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out md:hidden"
                 >
+
+                  <AiOutlineSwap className="text-xl text-gray-800 mr-2" />
                   Sort
 
                 </button>
@@ -170,19 +198,23 @@ const ProductsPage = () => {
 
           {/* for larger screen */}
           {categoriesParam === "Cloths" && (
-            <div className=" bg-gray-100 flex mb-4 sticky top-28 z-10 justify-between items-center">
+            <div className=" bg-gray-100 flex -mb-1 mr-14 ml-16 rounded-full sticky top-28 z-10 justify-between items-center">
               <h4 className="text-4xl font-semibold text-gray-700 hidden md:block">New Arrivals</h4>
               <button
                 onClick={() => setFilterDrawerOpen(true)}
-                className="w-1/6 font-bold text-lg bg-white text-gray-800 px-4 py-2 tracking-wider rounded-full border border-gray-300 shadow-sm  space-x-2 mr-11 ml-auto hidden md:block  hover:bg-blue-100 transition duration-300 ease-in-out"
+                className="w-1/6  font-bold text-lg bg-white text-gray-800 px-4 py-2 tracking-wider rounded-full border border-gray-300 shadow-sm space-x-2 mr-11 ml-auto hidden md:block  hover:bg-blue-100 transition duration-300 ease-in-out"
               >
-                Filter
+                <AiFillFilter className="ml-11 -mb-6 text-xl text-gray-800" />
+                filter
+
               </button>
 
               <button
                 onClick={() => setSortDrawerOpen(true)}
                 className="w-1/6 font-bold text-lg bg-white text-gray-800 px-4 py-2 tracking-wider rounded-full border border-gray-300 shadow-sm hidden md:block hover:bg-blue-100 transition duration-300 ease-in-out"
               >
+
+                <AiOutlineSwap className=" ml-11 -mb-6 text-xl text-gray-800 mr-2" />
                 Sort
 
               </button>
@@ -225,6 +257,16 @@ const ProductsPage = () => {
               <h2 className="text-lg font-bold">Filter Options</h2>
               <AiOutlineClose className="cursor-pointer" onClick={closeFilterDrawer} />
             </div>
+
+            <div className="flex justify-between items-center mb-4">
+              <button
+                onClick={clearFilters}
+                className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300 ease-in-out"
+              >
+                Clear Filters
+              </button>
+            </div>
+
             {/* Add filter options here */}
             <div className="mb-4">
               <label className="cursor-pointer flex items-center justify-between border-t-1 border-b-2 border-gray-300 text-gray-700 p-3 rounded-lg mb-2 hover:border-gray-500 transition duration-300 ease-in-out" onClick={() => setSizeExpanded(!sizeExpanded)}>
@@ -760,6 +802,7 @@ const ProductsPage = () => {
                   name="sortBy"
                   value="priceHighToLow"
                   onChange={(e) => handleFilterChange("sortBy", e.target.value)}
+                  onClick={closeSortDrawer}
                   checked={filters.sortBy === "priceHighToLow"}
                   className="mr-2"
                 />
@@ -772,6 +815,7 @@ const ProductsPage = () => {
                   name="sortBy"
                   value="priceLowToHigh"
                   onChange={(e) => handleFilterChange("sortBy", e.target.value)}
+                  onClick={closeSortDrawer}
                   checked={filters.sortBy === "priceLowToHigh"}
                   className="mr-2"
                 />
@@ -779,7 +823,7 @@ const ProductsPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex-1" onClick={closeSortDrawer}></div>
+          
         </div>
       )}
     </>

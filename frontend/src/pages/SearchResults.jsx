@@ -8,7 +8,7 @@ import Loader from "../components/Layout/Loader";
 import styles from "../styles/styles";
 import axios from "axios";
 import { server } from "../server";
-import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCaretDown, AiOutlineCaretUp, AiOutlineClose, AiFillFilter, AiOutlineSwap  } from "react-icons/ai";
 import {
   categoriesData,
   sleeveType,
@@ -168,6 +168,26 @@ const SearchResults = () => {
     }
   };
 
+  const clearFilters = () => {
+    setFilters({
+      colors: [],
+      sizes: [],
+      brandingDatas: [],
+      neckTypes: [],
+      sleeveTypes: [],
+      fabrics: [],
+      occasions: [],
+      fits: [],
+      subCategorys: [],
+      genders: [],
+      customerRatings: [],
+      priceRanges: [],
+    });
+    setCurrentPage(1);
+  window.location.reload() ;
+  };
+  
+
 
   const visibleSizes = showAllSizes ? size : size.slice(0, 6);
   const visibleSubCategories = showAllSubCategories ? subCategory : subCategory.slice(0, 6);
@@ -184,20 +204,53 @@ const SearchResults = () => {
         <div>
           <Header activeHeading={3} />
           <div className={`${styles.section}`}>
-            <div className="flex items-center mb-4">
+            {/* for MObile view */}
+            <div className="flex mb-0 sticky top-28 z-10 -mx-4">
+              <div className="w-1/2 p-0 m-0">
+                <button
+                  className="w-full bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out md:hidden"
+                  onClick={toggleDrawer}
+                >
+                   <AiFillFilter className="mr-2 text-xl text-gray-800" />
+                  Filter
+                </button>
+              </div>
+              <div className="w-1/2 p-0 m-0">
+                <button
+                  className="w-full bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out md:hidden"
+                  onClick={toggleSortDrawer}
+                >
+                   <AiOutlineSwap className="text-xl text-gray-800 mr-2" />
+                  Sort
+                </button>
+              </div>
+            </div>
+
+            {/* for larger screen */}
+
+    
+            <div className=" bg-gray-100  rounded-full flex mb-1 mt-1 sticky top-28 z-10 justify-between items-center">
+              <h4 className="text-4xl font-semibold text-gray-700 hidden md:block">New Arrivals</h4>
               <button
-                className="w-1/6 bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out"
+                className="w-1/6 font-bold text-lg bg-white text-gray-800 px-4 py-2 tracking-wider rounded-full border border-gray-300 shadow-sm space-x-2 mr-11 ml-auto hidden md:block  hover:bg-blue-100 transition duration-300 ease-in-out"
                 onClick={toggleDrawer}
               >
-                Filter
+                  <AiFillFilter className="ml-11 -mb-6 text-xl text-gray-800" />
+                filter
               </button>
+
+
               <button
-                className="w-1/6 bg-blue-100 flex items-center justify-center font-bold text-lg tracking-wider border-t-1 border-b-2 text-gray-700 p-3 rounded-lg mb-2 border-gray-500 transition duration-300 ease-in-out"
+                className="w-1/6 font-bold text-lg bg-white text-gray-800 px-4 py-2 tracking-wider rounded-full border border-gray-300 shadow-sm hidden md:block hover:bg-blue-100 transition duration-300 ease-in-out"
                 onClick={toggleSortDrawer}
               >
-                Sort By
+                   <AiOutlineSwap className=" ml-11 -mb-6 text-xl text-gray-800 mr-2" />
+                Sort
               </button>
             </div>
+
+
+
             <div
               className={`fixed inset-0 bg-gray-900 bg-opacity-50 z-40 transition-opacity ${drawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"
                 }`}
@@ -212,6 +265,15 @@ const SearchResults = () => {
                 <AiOutlineClose className="cursor-pointer" onClick={toggleDrawer} />
               </div>
               <form onSubmit={handleFilterSubmit}>
+              <div className="mb-4">
+                    <button
+                      type="button"
+                      className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300 ease-in-out"
+                      onClick={clearFilters}
+                    >
+                      Clear Filters
+                    </button>
+                  </div>
                 {/* Color Filter */}
                 <div className="mb-4">
                   <h3
@@ -442,28 +504,6 @@ const SearchResults = () => {
                       </label>
                     ))}
                 </div>
-                {/* Customer Ratings Filter
-                <div className="mb-4">
-                  <h3
-                    className="cursor-pointer flex items-center justify-between border-t-1 border-b-2 border-gray-300 text-gray-700 p-3 rounded-lg mb-2 hover:border-gray-500 transition duration-300 ease-in-out"
-                    onClick={() => toggleDropdown("customerRatings")}
-                  >
-                    Customer Rating
-                    {dropdowns.customerRatings ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}
-                  </h3>
-                  {dropdowns.customerRatings &&
-                    [1, 2, 3, 4, 5].map((rating) => (
-                      <label key={rating} className="block ml-2">
-                        <input
-                          type="checkbox"
-                          value={rating}
-                          checked={filters.customerRatings.includes(rating)}
-                          onChange={() => handleCheckboxChange("customerRatings", rating)}
-                        />
-                        {rating} Stars
-                      </label>
-                    ))}
-                </div> */}
                 {/* Customer Rating Filter */}
                 <div className="mb-4">
                   <h3
@@ -514,12 +554,10 @@ const SearchResults = () => {
                       </label>
                     ))}
                 </div>
-                {/* <button type="submit" className="bg-blue-500 text-white py-2 px-4 mt-4">
-                  Apply Filters
-                </button> */}
+                   
               </form>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {filteredData.map((product) => (
                 <ProductCard data={product} key={product._id} />
               ))}
@@ -554,6 +592,7 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Price: Low to High"
                       onClick={() => handleSortOption("price-asc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByPriceLowToHigh">Price (Low to High)</label>
                   </div>
@@ -565,6 +604,7 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Price: High to Low"
                       onClick={() => handleSortOption("price-desc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByPriceHighToLow">Price (High to Low)</label>
                   </div>
@@ -576,6 +616,7 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Rating: Low to High"
                       onClick={() => handleSortOption("rating-asc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByRatingLowToHigh">Rating (Low to High)</label>
                   </div>
@@ -587,6 +628,7 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Rating: High to Low"
                       onClick={() => handleSortOption("rating-desc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByRatingHighToLow">Rating (high to Low)</label>
                   </div>
@@ -598,6 +640,7 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Date: Old to New"
                       onClick={() => handleSortOption("date-asc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByDateOldToNew">Date (Old to New)</label>
                   </div>
@@ -609,12 +652,12 @@ const SearchResults = () => {
                       className="mr-2"
                       value="Date: New to Old"
                       onClick={() => handleSortOption("date-desc")}
+                      onChange={toggleSortDrawer}
                     />
                     <label htmlFor="sortByDateNewToOld">Date (New to Old)</label>
                   </div>
                 </div>
               </div>
-              <div className="flex-1" onClick={toggleSortDrawer}></div> {/* Close sort drawer on click outside */}
             </div>
           )}
           <Footer />
