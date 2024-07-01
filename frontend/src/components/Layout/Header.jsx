@@ -466,9 +466,10 @@ const Header = ({ activeHeading }) => {
           <div>
             <Link to="/">
               <h1
+              
                 style={{
                   color: "#142337",
-                  fontSize: "44px",
+                  fontSize: "36px",
                   fontWeight: "bold",
                 }}
               >
@@ -615,7 +616,7 @@ const Header = ({ activeHeading }) => {
         )}
         {/* search bar */}
         <div
-          className={`sticky top-[60px] z-[10] bg-white my-1 w-full m-auto h-[40px relative] block 800px:hidden`}
+          className={`sticky top-[60px] z-[10] bg-white my-1 w-11/12 m-auto h-[40px relative] block 800px:hidden`}
           ref={mobileInputRef}
         >
           <input
@@ -624,7 +625,7 @@ const Header = ({ activeHeading }) => {
             value={mobileSearchTerm}
             onChange={handlemobileSearchChange}
             onKeyDown={handleMobileSearchSubmit}
-            className="h-[40px] w-full px-2 border-[#3957db] border-[1px] rounded"
+            className="h-[40px] w-full px-2  border-[1px] rounded-md bg-blue-50 mb-3"
           />
           <AiOutlineSearch
             size={30}
